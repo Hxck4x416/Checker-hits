@@ -220,4 +220,10 @@ def menu():
             print_yellow("Reiniciando el código...")
             menu()
         elif option == '0':
-            print
+            print_green("Saliendo...")
+            break
+        else:
+            print_red("Opción inválida. Por favor, selecciona una opción válida.")
+
+if __name__ == '__main__':
+    menu()
