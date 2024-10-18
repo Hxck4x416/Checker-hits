@@ -437,8 +437,15 @@ def menu():
         elif option == '2':
             add_accounts_manually('accounts.txt')
         elif option == '3':
-            input_file = input("Introduce el nombre del archivo desde el cual agregar cuentas (o ruta completa): ")
-            add_accounts_from_file(input_file, 'accounts.txt')
+            base_path = '/data/data/com.termux/files/home/Checker-hits/cuentas/'
+            file_name = input("Introduce el nombre del archivo desde el cual agregar cuentas (sin la ruta, solo el nombre .txt): ")
+            input_file = base_path + file_name
+
+            if not input_file.endswith('.txt'):
+                input_file += '.txt'
+
+                add_accounts_from_file(input_file, 'accounts.txt')
+
         elif option == '4':
             view_valid_accounts()
         elif option == '5':
